@@ -1,73 +1,26 @@
 <?php
-/**
- * Application Name: farm_produce_sales_calculator.php
- * Group Scenario 7: Farm Produce Sales Calculator - Group 7
- * Course: COM213 Advanced Web Development
- */
+// Branch 3: Strictly Loops Implementation
 
-define('TRANSPORT_RATE', 500);          
-define('HIGH_SALES_THRESHOLD', 500000); 
-
-$produce_orders = [
-    ["produce_name" => "Maize", "unit" => "Kg", "quantity" => 200, "unit_price" => 3],
-    ["produce_name" => "Beans", "unit" => "Kg", "quantity" => 100, "unit_price" => 2]
+$produce_sales = [
+    ['crop' => 'beans', 'quantity_kg' => 400, 'price_per_kg' => 2500],
+    ['crop' => 'maize', 'quantity_kg' => 1000, 'price_per_kg' => 1500],
+    ['crop' => 'simsim', 'quantity_kg' => 150, 'price_per_kg' => 4000]
 ];
-function calculateGross(array $orders): float {
-    $gross_sales = 0.0;
-    
-    foreach ($orders as $order) {
-        if ($order['quantity'] < 0) {
-            echo "[ERROR NOTICE]: Invalid quantity (" . $order['quantity'] . ") detected for " . $order['produce_name'] . "!\n";
-            continue;
-        }
-        $subtotal = $order['quantity'] * $order['unit_price'];
-        $gross_sales += $subtotal;
-    }
-    
-    return $gross_sales;
+
+$processed_sales = [];
+
+// Pure loop execution without conditions or CLI printing
+foreach ($produce_sales as $item) {
+    $crop = $item['crop'] ?? '';
+    $quantity = $item['quantity_kg'] ?? 0;
+    $price = $item['price_per_kg'] ?? 0;
+
+    $gross_sales = $quantity * $price;
+    $transport_cost = $quantity * 500;
+    $net_sales = $gross_sales - $transport_cost;
+
+    $processed_sales[] = [
+        'crop' => $crop,
+        'net_sales' => $net_sales
+    ];
 }
-
-function calculateTransport(array $orders): float {
-    $total_quantity = 0;
-    
-    foreach ($orders as $order) {
-        if ($order['quantity'] > 0) {
-            $total_quantity += $order['quantity'];
-        }
-    }
-    
-    return $total_quantity * TRANSPORT_RATE;
-}
-
-function calculateNet(float $gross_sales, float $transport_cost): float {
-    return $gross_sales - $transport_cost;
-}
-
-$header_text = "=== FARM PRODUCE SALES REPORT (GROUP 7) ===";
-echo $header_text . "\n\n";
-
-echo "Detailed Item Breakdown:\n";
-foreach ($produce_orders as $index => $item) {
-    $item_total = $item['quantity'] * $item['unit_price'];
-    $formatted_name = strtoupper($item['produce_name']);
-    echo "Item " . ($index + 1) . ": " . $formatted_name . " | Qty: " . $item['quantity'] . " " . $item['unit'] . " @ UGX " . number_format($item['unit_price']) . " = UGX " . number_format($item_total) . "\n";
-}
-
-$gross_sales = calculateGross($produce_orders);
-$transport_cost = calculateTransport($produce_orders);
-$net_proceeds = calculateNet($gross_sales, $transport_cost);
-
-echo "\n----------------------------------------\n";
-echo "Gross Sales     : UGX " . number_format($gross_sales) . "\n";
-echo "Transport Cost  : UGX " . number_format($transport_cost) . "\n";
-echo "Net Proceeds    : UGX " . number_format($net_proceeds) . "\n";
-echo "----------------------------------------\n";
-
-if ($net_proceeds > HIGH_SALES_THRESHOLD) {
-    echo "Status: HIGH PERFORMANCE - Target exceeded successfully!\n";
-} elseif ($net_proceeds > 0) {
-    echo "Status: STANDARD PERFORMANCE - Profitable cycle.\n";
-} else {
-    echo "Status: LOSS / BREAK-EVEN - Review operational costs.\n";
-}
-?>
