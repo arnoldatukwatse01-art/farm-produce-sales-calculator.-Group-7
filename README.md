@@ -1,6 +1,5 @@
 # 🌾 Farm Produce Sales Calculator - Group 7
-**Cavendish University Uganda | School of Computer Science**
-**Course: Structured Programming | PHP Project**
+
 
 ### Project Overview
 This PHP application calculates gross sales, transport costs, and net proceeds for farm produce. It helps small-scale farmers in Uganda to quickly determine profit after deducting transport costs (500 UGX per kg).
