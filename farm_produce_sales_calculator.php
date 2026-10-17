@@ -1,26 +1,36 @@
 <?php
-// Branch 3: Strictly Loops Implementation
+// Branch 3: Loops, Conditions, and String Functions
 
-$produce_sales = [
-    ['crop' => 'beans', 'quantity_kg' => 400, 'price_per_kg' => 2500],
-    ['crop' => 'maize', 'quantity_kg' => 1000, 'price_per_kg' => 1500],
-    ['crop' => 'simsim', 'quantity_kg' => 150, 'price_per_kg' => 4000]
+$salesRecords = [
+    ['crop' => 'Maize', 'unit' => 'sack', 'quantity' => 10],
+    ['crop' => 'Beans', 'unit' => 'kg', 'quantity' => 250],
+    ['crop' => 'Rice', 'unit' => 'sack', 'quantity' => 5],
+    ['crop' => 'Groundnuts', 'unit' => 'kg', 'quantity' => 60]
 ];
 
-$processed_sales = [];
+// FOREACH LOOP
+foreach ($salesRecords as $record) {
+    $crop = $record['crop'];
+    $unit = $record['unit'];
+    $quantity = $record['quantity'];
 
-// Pure loop execution without conditions or CLI printing
-foreach ($produce_sales as $item) {
-    $crop = $item['crop'] ?? '';
-    $quantity = $item['quantity_kg'] ?? 0;
-    $price = $item['price_per_kg'] ?? 0;
+    $grossSales = $quantity * 2000; // placeholder test value
+    $transportCost = $quantity * 100;
+    $netSales = $grossSales - $transportCost;
 
-    $gross_sales = $quantity * $price;
-    $transport_cost = $quantity * 500;
-    $net_sales = $gross_sales - $transport_cost;
+    // IF-ELSE CONDITIONAL LOGIC
+    if ($netSales > 1000000) {
+        $performanceStatus = "High Performance";
+    } elseif ($netSales >= 300000) {
+        $performanceStatus = "Standard Performance";
+    } else {
+        $performanceStatus = "Low Performance";
+    }
 
-    $processed_sales[] = [
-        'crop' => $crop,
-        'net_sales' => $net_sales
-    ];
+    // STRTTOUPPER() STRING FUNCTION
+    $formattedCrop = strtoupper($crop);
+    $formattedStatus = strtoupper($performanceStatus);
+
+    echo "Produce: $formattedCrop | Net: UGX " . number_format($netSales) . " | Status: $formattedStatus\n";
 }
+?>
