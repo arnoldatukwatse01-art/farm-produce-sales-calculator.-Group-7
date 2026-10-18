@@ -1,53 +1,55 @@
 
 <?php
+const TRANSPORT_PER_KG = 1000;
+const TRANSPORT_PER_SACK = 4000;
 
-// GROUP 7: FARM PRODUCE SALES CALCULATOR
-
-// 1. CONSTANTS: Fixed prices and transport rates
-define("MAIZE_PRICE_PER_KG", 1800);
-define("MAIZE_PRICE_PER_SACK", 180000);
-
-define("BEANS_PRICE_PER_KG", 3500);
-define("BEANS_PRICE_PER_SACK", 350000);
-
-define("RICE_PRICE_PER_KG", 4000);
-define("RICE_PRICE_PER_SACK", 400000);
-
-define("GROUNDNUTS_PRICE_PER_KG", 5000);
-define("GROUNDNUTS_PRICE_PER_SACK", 500000);
-
-define("TRANSPORT_COST_PER_KG", 100);
-define("TRANSPORT_COST_PER_SACK", 5000);
-
-
-// 2. ARRAYS: Available produce and their prices
-
-$produceNames = ["Maize", "Beans", "Rice", "Groundnuts"];
-
-$prices = [
-    "Maize" => [
-        "kg" => MAIZE_PRICE_PER_KG,
-        "sack" => MAIZE_PRICE_PER_SACK
-    ],
-    "Beans" => [
-        "kg" => BEANS_PRICE_PER_KG,
-        "sack" => BEANS_PRICE_PER_SACK
-    ],
-    "Rice" => [
-        "kg" => RICE_PRICE_PER_KG,
-        "sack" => RICE_PRICE_PER_SACK
-    ],
-    "Groundnuts" => [
-        "kg" => GROUNDNUTS_PRICE_PER_KG,
-        "sack" => GROUNDNUTS_PRICE_PER_SACK
-    ]
+//multi-dimensional array
+$products = [
+    ["name" => "maize", "unit" => "kg",   "quantity" => 10, "price_for_each" => 3000],
+    ["name" => "beans", "unit" => "sack", "quantity" => 2,  "price_for_each" => 20000],
+    ["name" => "peas",  "unit" => "kg",   "quantity" => 2,  "price_for_each" => 4500]
 ];
 
+//FUNCTIONS
+function calculateGrossSales($products) {
+    // totalGrossSales is a local variable. It is created when the function runs and can only be accessed within this function. Outside of the function, it's value can be accessed via the return statement.
+    $totalGrossSales = 0;
+    //loop
+    foreach ($products as $product) {
+        $totalGrossSales += $product["quantity"] * $product["price_for_each"];
+    }
+    return $totalGrossSales;
+}
 
-// 3. VARIABLES: Store sales and totals
+function calculateTransportCosts($products) {
+    $totalTransport = 0;
+    //loop
+    foreach ($products as $product) {
+        if ($product["unit"] == "kg") {
+            $totalTransport += $product["quantity"] * TRANSPORT_PER_KG;
+        } else {
+            $totalTransport += $product["quantity"] * TRANSPORT_PER_SACK;
+        }
+    }
+    return $totalTransport;
+}
 
-$salesRecords = [];
-$totalGrossSales = 0;
-$totalTransportCost = 0;
+$totalGrossSales = calculateGrossSales($products);
+$transportCosts = calculateTransportCosts($products);
+$totalNetProceeds = $totalGrossSales - $transportCosts;
 
+//STATUS
+if($totalNetProceeds > 0){
+    $status = "Profit";
+} elseif ($totalNetProceeds == 0){
+    $status = "Break-even";
+} else {
+    $status = "Loss";
+}
+
+echo strtoupper("Farm produce sales summary") . "\n"; //string_function
+echo "Gross sales: " . $totalGrossSales . "\n";
+echo "Transport costs: " . $transportCosts . "\n";
+echo "Net proceeds: " . $totalNetProceeds . "\n";
+echo "Status: " . $status . "\n";
 ?>
