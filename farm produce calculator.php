@@ -34,6 +34,9 @@ function calculateTransportCosts($products) {
     return $totalTransport;
 }
 
+// Adding a new product
+$products[] = ["name" => "millet",  "unit" => "kg",   "quantity" => 5,  "price_for_each" => 3500];
+
 $totalGrossSales = calculateGrossSales($products);
 $transportCosts = calculateTransportCosts($products);
 $totalNetProceeds = $totalGrossSales - $transportCosts;
@@ -47,9 +50,9 @@ if($totalNetProceeds > 0){
     $status = "Loss";
 }
 
-echo strtoupper("Farm produce sales summary") . "\n"; //string_function
-echo "Gross sales: " . $totalGrossSales . "\n";
-echo "Transport costs: " . $transportCosts . "\n";
-echo "Net proceeds: " . $totalNetProceeds . "\n";
-echo "Status: " . $status . "\n";
+echo strtoupper("Farm produce sales summary") . "<br>"; //string_function
+echo "Gross sales: " . $totalGrossSales . "<br>";
+echo "Transport costs: " . $transportCosts . "<br>";
+echo "Net proceeds: " . $totalNetProceeds . "<br>";
+echo "Status: " . $status;
 ?>
