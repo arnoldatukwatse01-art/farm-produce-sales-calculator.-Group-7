@@ -1,73 +1,58 @@
+
 <?php
-/**
- * Application Name: farm_produce_sales_calculator.php
- * Group Scenario 7: Farm Produce Sales Calculator - Group 7
- * Course: COM213 Advanced Web Development
- */
+const TRANSPORT_PER_KG = 1000;
+const TRANSPORT_PER_SACK = 4000;
 
-define('TRANSPORT_RATE', 500);          
-define('HIGH_SALES_THRESHOLD', 500000); 
-
-$produce_orders = [
-    ["produce_name" => "Maize", "unit" => "Kg", "quantity" => 200, "unit_price" => 3],
-    ["produce_name" => "Beans", "unit" => "Kg", "quantity" => 100, "unit_price" => 2]
+//multi-dimensional array
+$products = [
+    ["name" => "maize", "unit" => "kg",   "quantity" => 10, "price_for_each" => 3000],
+    ["name" => "beans", "unit" => "sack", "quantity" => 2,  "price_for_each" => 20000],
+    ["name" => "peas",  "unit" => "kg",   "quantity" => 2,  "price_for_each" => 4500]
 ];
-function calculateGross(array $orders): float {
-    $gross_sales = 0.0;
-    
-    foreach ($orders as $order) {
-        if ($order['quantity'] < 0) {
-            echo "[ERROR NOTICE]: Invalid quantity (" . $order['quantity'] . ") detected for " . $order['produce_name'] . "!\n";
-            continue;
-        }
-        $subtotal = $order['quantity'] * $order['unit_price'];
-        $gross_sales += $subtotal;
+
+//FUNCTIONS
+function calculateGrossSales($products) {
+    // totalGrossSales is a local variable. It is created when the function runs and can only be accessed within this function. Outside of the function, it's value can be accessed via the return statement.
+    $totalGrossSales = 0;
+    //loop
+    foreach ($products as $product) {
+        $totalGrossSales += $product["quantity"] * $product["price_for_each"];
     }
-    
-    return $gross_sales;
+    return $totalGrossSales;
 }
 
-function calculateTransport(array $orders): float {
-    $total_quantity = 0;
-    
-    foreach ($orders as $order) {
-        if ($order['quantity'] > 0) {
-            $total_quantity += $order['quantity'];
+function calculateTransportCosts($products) {
+    $totalTransport = 0;
+    //loop
+    foreach ($products as $product) {
+        if ($product["unit"] == "kg") {
+            $totalTransport += $product["quantity"] * TRANSPORT_PER_KG;
+        } else {
+            $totalTransport += $product["quantity"] * TRANSPORT_PER_SACK;
         }
     }
-    
-    return $total_quantity * TRANSPORT_RATE;
+    return $totalTransport;
 }
 
-function calculateNet(float $gross_sales, float $transport_cost): float {
-    return $gross_sales - $transport_cost;
-}
+// Adding a new product
+$products[] = ["name" => "millet",  "unit" => "kg",   "quantity" => 5,  "price_for_each" => 3500];
 
-$header_text = "=== FARM PRODUCE SALES REPORT (GROUP 7) ===";
-echo $header_text . "\n\n";
+$totalGrossSales = calculateGrossSales($products);
+$transportCosts = calculateTransportCosts($products);
+$totalNetProceeds = $totalGrossSales - $transportCosts;
 
-echo "Detailed Item Breakdown:\n";
-foreach ($produce_orders as $index => $item) {
-    $item_total = $item['quantity'] * $item['unit_price'];
-    $formatted_name = strtoupper($item['produce_name']);
-    echo "Item " . ($index + 1) . ": " . $formatted_name . " | Qty: " . $item['quantity'] . " " . $item['unit'] . " @ UGX " . number_format($item['unit_price']) . " = UGX " . number_format($item_total) . "\n";
-}
-
-$gross_sales = calculateGross($produce_orders);
-$transport_cost = calculateTransport($produce_orders);
-$net_proceeds = calculateNet($gross_sales, $transport_cost);
-
-echo "\n----------------------------------------\n";
-echo "Gross Sales     : UGX " . number_format($gross_sales) . "\n";
-echo "Transport Cost  : UGX " . number_format($transport_cost) . "\n";
-echo "Net Proceeds    : UGX " . number_format($net_proceeds) . "\n";
-echo "----------------------------------------\n";
-
-if ($net_proceeds > HIGH_SALES_THRESHOLD) {
-    echo "Status: HIGH PERFORMANCE - Target exceeded successfully!\n";
-} elseif ($net_proceeds > 0) {
-    echo "Status: STANDARD PERFORMANCE - Profitable cycle.\n";
+//STATUS
+if($totalNetProceeds > 0){
+    $status = "Profit";
+} elseif ($totalNetProceeds == 0){
+    $status = "Break-even";
 } else {
-    echo "Status: LOSS / BREAK-EVEN - Review operational costs.\n";
+    $status = "Loss";
 }
+
+echo strtoupper("Farm produce sales summary") . "<br>"; //string_function
+echo "Gross sales: " . $totalGrossSales . "<br>";
+echo "Transport costs: " . $transportCosts . "<br>";
+echo "Net proceeds: " . $totalNetProceeds . "<br>";
+echo "Status: " . $status;
 ?>
