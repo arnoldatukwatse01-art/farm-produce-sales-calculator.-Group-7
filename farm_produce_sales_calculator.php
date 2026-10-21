@@ -1,4 +1,4 @@
-// Final integrated script for Farm Produce Sales Calculator
+// Final Farm Produce Sales Calculator
 <?php
 const TRANSPORT_PER_KG = 1000;
 const TRANSPORT_PER_SACK = 4000;
