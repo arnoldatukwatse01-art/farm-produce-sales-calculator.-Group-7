@@ -1,6 +1,5 @@
 
 <?php
-<<<<<<< HEAD
 // Branch 3: Loops, Conditions, and String Functions
 
 $salesRecords = [
@@ -34,7 +33,6 @@ foreach ($salesRecords as $record) {
     $formattedStatus = strtoupper($performanceStatus);
 
     echo "Produce: $formattedCrop | Net: UGX " . number_format($netSales) . " | Status: $formattedStatus\n";
-=======
 const TRANSPORT_PER_KG = 1000;
 const TRANSPORT_PER_SACK = 4000;
 
@@ -83,7 +81,6 @@ if($totalNetProceeds > 0){
     $status = "Break-even";
 } else {
     $status = "Loss";
->>>>>>> 6e294dd3fdb3d53afc5ec6ec0994e71c8691f730
 }
 
 echo strtoupper("Farm produce sales summary") . "<br>"; //string_function
